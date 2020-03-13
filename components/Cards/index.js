@@ -17,3 +17,43 @@
 // </div>
 //
 // Create a card for each of the articles and add the card to the DOM.
+
+
+function creatingTabs (data){
+    const card = document.createElement('div')
+    const headLine = document.createElement('div')
+    const author = document.createElement('div')
+    const imgContainer = document.createElement('div')
+    const mainImg = document.createElement('img')
+    const span = document.createElement('span')
+
+    card.classList.add('card')
+    headLine.classList.add('headline')
+    author.classList.add('author')
+    imgContainer.classList.add('img-container')
+    
+    mainImg.src = data.authorPhoto
+    headLine.textContent = data.headline
+    span.textContent = data.authorName
+
+    card.append(headLine)
+    card.append(author)
+    author.append(imgContainer)
+    imgContainer.append(mainImg)
+    author.append(span)
+
+    return card
+}
+
+const tabContainer = document.querySelector('.cards-container')
+
+axios.get('https://lambda-times-backend.herokuapp.com/articles')
+    .then(response =>{
+        console.log(response.data.articles.javascript);
+        response.data.articles.javascript.forEach( item => {
+            tabContainer.append(creatingTabs(item))
+        })
+    })
+    .catch(error =>{
+        console.log('the error:',error)
+    })
